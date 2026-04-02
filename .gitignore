@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+.Python
+
+# Local dev / OS
+.DS_Store
+.vscode/
+.idea/
+
+# App data (do not commit real data)
+sample_tracking.db
+*.db
+
+# Logs
+*.log

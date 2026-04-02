@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In · Sample Tracking Console</title>
+    <link rel="stylesheet" href="/styles.css?v=6" />
+  </head>
+  <body class="login-body">
+    <div class="login-shell login-shell--google" id="login-shell">
+      <div class="login-card login-card--google" role="region" aria-label="Sign in">
+        <div class="g-head">
+          <div class="g-logo" aria-hidden="true">ST</div>
+          <div class="g-brand">Sample Tracking</div>
+        </div>
+
+        <h1 class="g-title">Sign in</h1>
+        <p class="g-subtitle">Continue to Sample Tracking Console</p>
+
+        <form id="login-form" class="login-form login-form--google">
+          <div class="g-field">
+            <label for="g-username">Username</label>
+            <input id="g-username" name="username" autocomplete="username" placeholder="Enter your username" required />
+          </div>
+
+          <div class="g-field">
+            <label for="g-password">Password</label>
+            <input id="g-password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required />
+          </div>
+
+          <div class="g-actions">
+            <button type="submit" id="login-button" class="g-next">Next</button>
+          </div>
+        </form>
+
+        <div class="login-error" id="login-error" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <script src="/app.js?v=6"></script>
+  </body>
+</html>

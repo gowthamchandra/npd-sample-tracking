@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sample Tracking Console</title>
+    <link rel="stylesheet" href="/styles.css?v=1" />
+    <script defer src="/app.js?v=1"></script>
+  </head>
+  <body>
+    <div class="bg"></div>
+
+    <main class="wrap">
+      <header class="topbar">
+        <div class="brand">
+          <div class="mark">ST</div>
+          <div>
+            <div class="kicker">NPD OPERATIONS</div>
+            <div class="name">Sample Tracking Console</div>
+          </div>
+        </div>
+        <div class="session">
+          <span id="session"></span>
+          <button class="ghost" type="button" id="logout">Logout</button>
+        </div>
+      </header>
+
+      <section class="hero">
+        <div>
+          <div class="eyebrow">Operational Intelligence</div>
+          <h1>Secure operating zones for teams.</h1>
+          <p class="sub">Your view is restricted based on your role. Admin sees everything.</p>
+        </div>
+        <div class="stats" id="stats"></div>
+      </section>
+
+      <section class="zones" id="zones">
+        <div class="zone" id="zone-quality" hidden>
+          <div class="zone-head">
+            <div>
+              <div class="zone-kicker">Quality</div>
+              <h2>Lot intake and analysis</h2>
+            </div>
+            <button data-open="lot-modal">Create Lot</button>
+          </div>
+          <div class="grid two">
+            <div id="lots-table"></div>
+            <div class="card">
+              <div class="card-head">
+                <h3>Analyses</h3>
+                <button data-open="analysis-modal" id="analysis-btn" disabled>Add Analysis</button>
+              </div>
+              <div class="hint" id="analysis-hint">Select a lot to view analyses.</div>
+              <div id="analyses-table"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="zone" id="zone-logistics" hidden>
+          <div class="zone-head">
+            <div>
+              <div class="zone-kicker">Logistics</div>
+              <h2>Inventory and shipment control</h2>
+            </div>
+            <button data-open="dispatch-modal" id="dispatch-btn" disabled>Create Shipment</button>
+          </div>
+          <div class="grid two">
+            <div id="inventory-table"></div>
+            <div class="card">
+              <div class="card-head">
+                <h3>Shipments</h3>
+              </div>
+              <div class="hint" id="dispatch-hint">Select a lot to view shipments.</div>
+              <div id="dispatches-table"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="zone" id="zone-marketing" hidden>
+          <div class="zone-head">
+            <div>
+              <div class="zone-kicker">Marketing</div>
+              <h2>Delivered samples and feedback</h2>
+            </div>
+            <button data-open="feedback-modal" id="feedback-btn" disabled>Add Feedback</button>
+          </div>
+          <div class="grid two">
+            <div id="marketing-table"></div>
+            <div class="card">
+              <div class="card-head">
+                <h3>Feedback detail</h3>
+              </div>
+              <div class="hint" id="feedback-hint">Select a delivered shipment to view feedback.</div>
+              <div id="feedback-detail"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <dialog id="lot-modal">
+      <form method="dialog" class="modal" id="lot-form">
+        <div class="modal-head">
+          <h3>Create Lot</h3>
+          <button class="ghost" value="cancel">Close</button>
+        </div>
+        <div class="grid two">
+          <label>Lot Number<input name="lot_number" required /></label>
+          <label>Product Name<input name="product_name" required /></label>
+          <label>Initial Quantity<input name="initial_quantity" type="number" step="0.01" required /></label>
+          <label>Unit
+            <select name="unit_measure" required>
+              <option value="kg">kg</option>
+              <option value="g">g</option>
+              <option value="L">L</option>
+            </select>
+          </label>
+          <label>NPD Project Ref<input name="npd_project_ref" /></label>
+          <label>Status
+            <select name="status">
+              <option>Draft</option>
+              <option>In Review</option>
+              <option>Approved</option>
+              <option>Closed</option>
+            </select>
+          </label>
+          <label class="span2">Notes<textarea name="notes"></textarea></label>
+        </div>
+        <button type="submit">Save</button>
+      </form>
+    </dialog>
+
+    <dialog id="analysis-modal">
+      <form method="dialog" class="modal" id="analysis-form">
+        <div class="modal-head">
+          <h3>Add Analysis</h3>
+          <button class="ghost" value="cancel">Close</button>
+        </div>
+        <div class="grid two">
+          <label>Test Type
+            <select name="test_type" required>
+              <option value="GD">GD</option>
+              <option value="FD">FD</option>
+              <option value="PSD">PSD</option>
+              <option value="XRF">XRF</option>
+            </select>
+          </label>
+          <label>Analyst<input name="analyst_name" required /></label>
+          <label>Spec<input name="spec_value" required /></label>
+          <label>Result<input name="result_value" required /></label>
+          <label>Test Date<input name="test_date" type="date" required /></label>
+          <label class="row"><input name="is_pass" type="checkbox" /> Pass</label>
+        </div>
+        <button type="submit">Save</button>
+      </form>
+    </dialog>
+
+    <dialog id="dispatch-modal">
+      <form method="dialog" class="modal" id="dispatch-form">
+        <div class="modal-head">
+          <h3>Create Shipment</h3>
+          <button class="ghost" value="cancel">Close</button>
+        </div>
+        <div class="grid two">
+          <label>Customer<input name="customer_name" required /></label>
+          <label>Quantity Sent<input name="quantity_sent" type="number" step="0.01" required /></label>
+          <label>Courier<input name="courier_name" required /></label>
+          <label>AWB / Tracking<input name="awb_number" required /></label>
+          <label class="span2">Dispatch Date<input name="dispatch_date" type="date" required /></label>
+        </div>
+        <button type="submit">Save</button>
+      </form>
+    </dialog>
+
+    <dialog id="feedback-modal">
+      <form method="dialog" class="modal" id="feedback-form">
+        <div class="modal-head">
+          <h3>Add Feedback</h3>
+          <button class="ghost" value="cancel">Close</button>
+        </div>
+        <div class="grid two">
+          <label>Rating<input name="rating" type="number" min="0" max="5" step="0.5" required /></label>
+          <label>Marketing Person<input name="marketing_person" required /></label>
+          <label class="row"><input name="action_required" type="checkbox" /> Action Required</label>
+          <label class="span2">Technical Notes<textarea name="technical_notes" required></textarea></label>
+          <label class="span2">Next Steps<textarea name="next_steps"></textarea></label>
+        </div>
+        <button type="submit">Save</button>
+      </form>
+    </dialog>
+  </body>
+</html>
+
