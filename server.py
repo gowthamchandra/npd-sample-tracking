@@ -78,40 +78,12 @@ CREATE TABLE IF NOT EXISTS feedback (
 """
 
 
-SEED = [
-    (
-        "INSERT OR IGNORE INTO lots (lot_number, product_name, initial_quantity, unit_measure, npd_project_ref, notes, status) "
-        "VALUES (?, ?, ?, ?, ?, ?, ?)",
-        [
-            ("LOT-24001", "Hydra Protein Bar", 240, "kg", "NPD-ALPHA", "Pilot batch for sensory review", "In Review"),
-            ("LOT-24002", "Sparkling Matcha", 180, "L", "NPD-BETA", "Awaiting dispatch to Delhi customer panel", "Approved"),
-        ],
-    ),
-    (
-        "INSERT OR IGNORE INTO analyses (lot_id, test_type, spec_value, result_value, is_pass, analyst_name, test_date) "
-        "VALUES (?, ?, ?, ?, ?, ?, ?)",
-        [
-            (1, "GD", "Moisture < 7%", "6.4%", 1, "Ananya Rao", "2026-03-26"),
-            (1, "XRF", "Metal trace ND", "ND", 1, "Ananya Rao", "2026-03-27"),
-            (2, "PSD", "Mean 18-22um", "21um", 1, "Karthik Menon", "2026-03-28"),
-        ],
-    ),
-    (
-        "INSERT OR IGNORE INTO dispatches (lot_id, customer_name, quantity_sent, courier_name, awb_number, dispatch_date, delivery_status) "
-        "VALUES (?, ?, ?, ?, ?, ?, ?)",
-        [
-            (2, "Retail Insights Lab", 35, "BlueDart", "AWB-993183", "2026-03-29", "Delivered"),
-            (1, "North Pilot Kitchen", 20, "Delhivery", "AWB-993184", "2026-03-31", "In-Transit"),
-        ],
-    ),
-    (
-        "INSERT OR IGNORE INTO feedback (dispatch_id, rating, technical_notes, action_required, next_steps, marketing_person, feedback_date) "
-        "VALUES (?, ?, ?, ?, ?, ?, ?)",
-        [
-            (1, 4.5, "Excellent carbonation hold. Packaging needs a clearer flavor cue.", 1, "Revise sleeve artwork before next dispatch", "Meera Shah", "2026-04-01"),
-        ],
-    ),
-]
+def should_seed_demo_data() -> bool:
+    value = (os.getenv("SEED_DEMO_DATA") or "").strip().lower()
+    return value in {"1", "true", "yes", "y", "on"}
+
+
+SEED: list[tuple[str, list[tuple]]] = []
 
 
 def now_iso() -> str:
@@ -129,7 +101,7 @@ def init_db() -> None:
     should_seed = not DB_PATH.exists()
     with get_connection() as conn:
         conn.executescript(SCHEMA)
-        if should_seed:
+        if should_seed and should_seed_demo_data() and SEED:
             for sql, rows in SEED:
                 conn.executemany(sql, rows)
 

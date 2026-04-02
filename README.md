@@ -36,3 +36,7 @@ This repo includes `render.yaml` and a `Dockerfile`.
 1. In Render: New → Blueprint
 2. Select this GitHub repo
 3. Deploy. Render mounts a persistent disk and stores the SQLite DB at `/var/data/sample_tracking.db`.
+
+## Demo seed data
+
+By default, a fresh database starts empty. To seed demo data on first boot, set `SEED_DEMO_DATA=1` before running.
